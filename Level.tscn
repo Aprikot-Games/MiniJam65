@@ -1,8 +1,27 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Level.gd" type="Script" id=1]
 [ext_resource path="res://Row.tscn" type="PackedScene" id=2]
+[ext_resource path="res://resources/dino2.png" type="Texture" id=3]
+[ext_resource path="res://resources/dino1.png" type="Texture" id=4]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 4 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 2.0
+} ]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 1 )
 Row = ExtResource( 2 )
+
+[node name="Player" type="AnimatedSprite" parent="."]
+scale = Vector2( 0.25, 0.25 )
+frames = SubResource( 1 )
+animation = "Idle"
+playing = true
+
+[node name="Timer" type="Timer" parent="."]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
