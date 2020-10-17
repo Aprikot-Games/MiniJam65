@@ -10,8 +10,8 @@ var grass_s_tex = preload("res://sprites/pasto-s.png")
 var stone_s_tex = preload("res://sprites/piedras-s.png")
 var ground_s_tex = preload("res://sprites/piso-s.png")
 
-var safe_texs = [[grass_tex, stone_tex, ground_tex], 
-				[grass_s_tex, stone_s_tex, ground_s_tex]]
+var safe_texs = [[grass_tex, stone_tex, ground_tex, void_tex], 
+				[grass_s_tex, stone_s_tex, ground_s_tex, void_tex]]
 
 var void_tex = preload("res://sprites/vacio.png")
 
@@ -34,11 +34,13 @@ func generate():
 	for i in range(n_blocks):
 		var new_block = Block.instance()
 		add_child(new_block)
-		var tex_indx = rng.randf_range(0, 3)
+		var tex_indx = rng.randf_range(0, 4)
 		new_block.type = tex_indx
 		new_block.set_texture(safe_texs[0][tex_indx])
 		new_block.position.x = i * SPRITE_WIDTH - (row_width/2)
 		row.append(new_block)
+	$Label.margin_left = n_blocks * SPRITE_WIDTH - (row_width/2)
+	$Label.text = str(tick_cnt) + "/" + str(speed)
 
 func rotate_left():
 	var end_block = row[0]
@@ -51,6 +53,7 @@ func rotate_left():
 func on_player_tick():
 	print("Player Move!")
 	tick_cnt += 1
-	if tick_cnt >= speed:
+	if tick_cnt > speed:
 		rotate_left()
-		tick_cnt = 0
+		tick_cnt = 1
+	$Label.text = str(tick_cnt) + "/" + str(speed)
