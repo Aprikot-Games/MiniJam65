@@ -1,6 +1,7 @@
 extends Node2D
 
 export (PackedScene) var Row
+var friends = ["pablo", "lola", "ruben", "tomas"]
 
 signal player_tick
 signal lose_life
@@ -29,7 +30,7 @@ func destroy():
 	player_pos = [] + STARTING_POS
 	rows = []
 
-func generate(layout):
+func generate(layout, level):
 	n_rows = len(layout)
 	for i in range(n_rows):
 		var new_row = Row.instance()
@@ -45,6 +46,7 @@ func generate(layout):
 	$Friend.show()
 	$Friend.position.x = n_rows * SPRITE_WIDTH - (SPRITE_WIDTH * n_blocks)/2
 	$Friend.position.y = -n_rows * SPRITE_WIDTH
+	$Friend.animation = friends[level]
 
 func _process(delta):
 	if game_over == true:
@@ -67,6 +69,7 @@ func _process(delta):
 	$Player.position.x = (player_pos[1] * SPRITE_WIDTH) - (SPRITE_WIDTH * n_blocks)/2
 	$Player.position.y = -(player_pos[0] * SPRITE_WIDTH) - 2
 	if emit == true:
+		$Step.play()
 		emit_signal("player_tick")
 		print(player_pos)
 		if player_pos[0] == n_rows:
@@ -79,5 +82,6 @@ func _process(delta):
 			print("returning to starting position")
 			player_pos = [] + STARTING_POS
 			print(player_pos)
+			$Fall.play()
 		if player_pos == [n_rows, 0]:
 			emit_signal("win_level")

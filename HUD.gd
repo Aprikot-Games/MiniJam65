@@ -7,6 +7,7 @@ signal new_level
 var empty_live_tex = preload("res://sprites/empty-heart.png")
 var full_live_tex = preload("res://sprites/heart.png")
 
+var inst = false
 const MAX_LIVES = 3
 var live_cnt = MAX_LIVES
 var lives 
@@ -34,22 +35,38 @@ func set_game_start():
 	show_lives()
 	$Message.hide()
 	$Button.hide()
+	$Cover.hide()
+	$CoverFinal.hide()
 
 func set_game_menu():
 	$Button.show()
 	$Message.hide()
+	$Cover.show()
+	$CoverFinal.hide()
 	hide_lives()
+	$Instructions.hide()
 
 func set_game_over():
 	$Message.text = "Game Over"
 	$Message.show()
 	$Timer.start()
+	$Instructions.hide()
+
+func set_final():
+	$Message.hide()
+	hide_lives()
+	$CoverFinal.show()
+	$Timer.wait_time = 6
+	$Timer.start()
+	game_state = 2
+	$Instructions.hide()
 
 func set_level_complete():
-	$Message.text = "Friend rescued!"
+	$Message.text = "Complete!"
 	$Message.show()
 	game_state = 1
 	$Timer.start()
+	$Instructions.hide()
 
 func _on_Level_lose_life():
 	live_cnt -= 1
@@ -67,7 +84,20 @@ func _on_Timer_timeout():
 	if game_state == 0:
 		set_game_menu()
 		emit_signal("destroy_game")
-	else:
-		emit_signal("new_level")
+	elif game_state == 1:
 		set_game_start()
 		game_state = 0
+		emit_signal("new_level")
+	else:
+		game_state = 0
+		set_game_menu()
+
+func _on_Game_game_complete():
+	print("HUD game complete")
+	set_final()
+
+func _on_Game_hide_instructions():
+	$Instructions.hide()
+
+func _on_Game_show_instructions():
+	$Instructions.show()

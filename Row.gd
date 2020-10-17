@@ -47,7 +47,7 @@ func generate(block_layout):
 		new_block.position.x = i * SPRITE_WIDTH - (row_width/2)
 		blocks.append(new_block)
 	$Label.margin_left = n_blocks * SPRITE_WIDTH - (row_width/2)
-	$Label.text = str(tick_cnt) + "/" + str(speed)
+	$Label.text = str(speed - tick_cnt)
 
 func rotate_left():
 	var end_block = blocks[0]
@@ -63,4 +63,4 @@ func on_player_tick():
 	if tick_cnt > speed:
 		rotate_left()
 		tick_cnt = 1
-	$Label.text = str(tick_cnt) + "/" + str(speed)
+	$Label.text = str(speed - tick_cnt)

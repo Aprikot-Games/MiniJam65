@@ -19,6 +19,10 @@ config/name="Mini Jam 65"
 run/main_scene="res://Game.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/size/resizable=false
+
 [rendering]
 
 quality/driver/driver_name="GLES2"
