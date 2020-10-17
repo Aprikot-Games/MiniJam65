@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Level.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game.gd" type="Script" id=2]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=3]
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 2 )
@@ -15,4 +16,12 @@ __meta__ = {
 }
 
 [node name="Level" parent="." instance=ExtResource( 1 )]
-position = Vector2( 512, 512 )
+position = Vector2( 512, 541 )
+
+[node name="HUD" parent="." instance=ExtResource( 3 )]
+[connection signal="lose_life" from="Level" to="HUD" method="_on_Level_lose_life"]
+[connection signal="win_level" from="Level" to="." method="_on_Level_win_level"]
+[connection signal="destroy_game" from="HUD" to="." method="_on_HUD_destroy_game"]
+[connection signal="game_over" from="HUD" to="." method="_on_HUD_game_over"]
+[connection signal="new_game" from="HUD" to="." method="_on_HUD_new_game"]
+[connection signal="new_level" from="HUD" to="." method="_on_HUD_new_level"]
